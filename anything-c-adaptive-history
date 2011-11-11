@@ -1,0 +1,3 @@
+;; -*- mode: emacs-lisp -*-
+;; History entries used for anything adaptive display.
+(setq anything-c-adaptive-history (quote ((command ("eval-buffer" ("eval" . 1))) ("W3m Bookmarks" ("Google" ("" . 1))))))
