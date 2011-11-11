@@ -37,8 +37,8 @@
 ;; ============================================================
 ;; 表示/設定
 ;; ============================================================
-(tool-bar-mode nil)                  ; ツールバー非表示
-(set-scroll-bar-mode nil)            ; スクロールバー非表示
+;; (tool-bar-mode nil)                  ; ツールバー非表示
+;;(set-scroll-bar-mode nil)            ; スクロールバー非表示
 
 (set-background-color "black")
 (set-foreground-color "white")
