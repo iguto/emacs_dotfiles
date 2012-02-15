@@ -1,0 +1,2 @@
+machine imap.gmail.com login clc.iguto@gmail.com
+password YOUR_PASSWORD port 993
