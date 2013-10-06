@@ -19,9 +19,6 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-7.5/lisp")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-7.5/contrib/lisp")
 
-;; ;; evernote-mode
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp/evernote-mode-0_30")
-
 ;; howm へのパス
 ;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/howm")
 
@@ -32,7 +29,7 @@
 (setq completion-ignore-case t)
 ;; 単語単位で補完する
 ;; p_hでpublic_htmlが補完できる． 区切り文字には .-_ が使える
-(partial-completion-mode t)
+;;(partial-completion-mode t)
 
 ;; ============================================================
 ;; 表示/設定
@@ -48,13 +45,13 @@
 (set-face-foreground 'font-lock-function-name-face "green")
 (set-face-foreground 'font-lock-warning-face "gold")
 (set-face-background 'region "RosyBrown")
-;;(set-frame-background-color "white")
-;; (set-face-background 'modeline "skyblue")
-(set-face-background 'modeline "purple")
+;(set-frame-background-color "white") ; error on utrillo1
+(set-face-background 'mode-line "skyblue")
+(set-face-background 'mode-line "purple")
 (set-face-background 'highlight "gray")
 
 
-;; ----現在行に色をつける----
+;; ;; ----現在行に色をつける----
 (defface hlline-face
   '((((class color)
       (background dark))
@@ -65,13 +62,12 @@
     (tool-bar-mode ()))
   "*Face used by hl-line.")
 (setq hl-line-face 'hlline-face)
-(setq hl-line-face 'underline) ; 下線
 (global-hl-line-mode t)
 
-;; ---- 対応する括弧を強調 ----
+;; ;; ---- 対応する括弧を強調 ----
 (show-paren-mode t)
 
-;; ----下のエリアでの入力キー表示速度を早くする----
+;; ;; ----下のエリアでの入力キー表示速度を早くする----
 (setq echo-keystrokes 0.1)
 (setq max-lisp-eval-depth 1000)
 
@@ -92,9 +88,6 @@
 ;; 最近使ったファイルに加えないファイルを正規表現で指定する
 (setq recentf-exclude '("TAGS$" "/var/tmp/"))
 
-;; ---- ファイルの自動バックアップ ----
-;; バックアップファイルを一箇所にまとめる
-
 ;; ============================================================
 ;; 機能追加
 ;; ============================================================
@@ -102,7 +95,7 @@
 ;; ========================================
 ;; クリップボード共有
 ;; ========================================
-(setq x-select-enable-clipboard t)
+;; (setq x-select-enable-clipboard t)
 
 ;; ========================================
 ;; flymake
@@ -141,41 +134,10 @@
 ;;                        temp-file
 ;;                        (file-name-directory buffer-file-name))))
 ;;     (list "g++" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
-
 ;; (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
-
 ;; (add-hook 'c++-mode-hook
 ;;           '(lambda ()
 ;;              (flymake-mode t)))
-
-
-;; ;; ;; flymake for c++
-;; ;; (require 'flymake)
-
-;; ;; (defun flymake-simple-generic-init (cmd &optional opts)
-;; ;;   (let* ((temp-file  (flymake-init-create-temp-buffer-copy
-;; ;;                       'flymake-create-temp-inplace))
-;; ;;          (local-file (file-relative-name
-;; ;;                       temp-file
-;; ;;                       (file-name-directory buffer-file-name))))
-;; ;;     (list cmd (append opts (list local-file)))))
-
-;; ;; ;; Makefile が無くてもC/C++のチェック
-;; ;; (defun flymake-simple-make-or-generic-init (cmd &optional opts)
-;; ;;   (if (file-exists-p "Makefile")
-;; ;;       (flymake-simple-make-init)
-;; ;;     (flymake-simple-generic-init cmd opts)))
-
-;; ;; (defun flymake-c-init ()
-;; ;;   (flymake-simple-make-or-generic-init
-;; ;;    "gcc" '("-Wall" "-Wextra" "-pedantic" "-fsyntax-only")))
-
-;; ;; (defun flymake-cc-init ()
-;; ;;   (flymake-simple-make-or-generic-init
-;; ;;    "g++" '("-Wall" "-Wextra" "-pedantic" "-fsyntax-only")))
-
-;; ;; (push '("\\.[cC]\\'" flymake-c-init) flymake-allowed-file-name-masks)
-;; ;; (push '("\\.\\(?:cc\|cpp\|CC\|CPP\\)\\'" flymake-cc-init) flymake-allowed-file-name-masks)
 
 ;; ============================================================
 ;; キーボードマクロ
@@ -194,33 +156,17 @@
 (global-set-key "\C-o" 'nil)
 
 ;; ============================================================
-;; コマンド拡張?
+;; キーバインド
 ;; ============================================================
+;; ;; C-h をバックスペースに。
+(global-set-key "\C-h" 'backward-delete-char)
 
-;; ;; 略語展開、補完コマンドをM-x hippie-expandとしてまとめる
-;; (setq hippie-expand-try-functions-list
-;;        '(try-complete-file-name-partically   ;ファイル名の一部
-;; 	 try-complete-file-name-	     ;ファ入り名全体
-;; 	 try-expand-all-abbrevs	             ;動的略語展開(カレントバッファ)
-;; 	 try-expand-all-abbrevs-all-buffers  ;動的略語展開(全バッファ)
-;; 	 try-expand-all-abbrevs-from-kill    ;動的略語展開(キルリング M-w/C-wから)
-;; 	 try-complete-lisp-symbol-partically ;Lispシンボルの一部
-;; 	 try-complete-lisp-symbol	     ;Lispシンボル名全体
-;; 	 ))
-;; (custom-set-variables
-;;   ;; custom-set-variables was added by Custom.
-;;   ;; If you edit it by hand, you could mess it up, so be careful.
-;;   ;; Your init file should contain only one such instance.
-;;   ;; If there is more than one, they won't work right.
-;;  '(ac-auto-start t)
-;;  '(global-auto-complete-mode t))
-;; (custom-set-faces
-;;   ;; custom-set-faces was added by Custom.
-;;   ;; If you edit it by hand, you could mess it up, so be careful.
-;;   ;; Your init file should contain only one such instance.
-;;   ;; If there is more than one, they won't work right.
-;;  )
 
+
+
+;; ;; ============================================================
+;; ;; コマンド拡張?
+;; ;; ============================================================
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -250,37 +196,10 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 
-;; ========================================
-;; c++ mode
-;; ========================================
-;; (add-hook 'c++-mode-hook
-;;     '(lambda()
-;;        (c-set-style "cc-mode")
-;;        (setq c-tab-always-indent nil)	;tabキーでインデント
-;; 	   ;; nil でtab挿入 (not自動インデント)
-;;        (setq tab-width 2)
 
-;;        )
-;; )
 
-; C
-
-;; (add-hook 'c-mode-hook
-
-;;        '(lambda()
-;; 	   (setq c-default-style "k&r")
-;;            (setq c-basic-offset tab-width)
-;;          ))
 ;; ; タブ幅
 (setq-default tab-width 2)
-; タブ幅の倍数
-;; (setq tab-stop-list
-;;     '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
-
-;; (setq c-auto-indent nil) ; 全自動インデントを無効
-;; (setq tab-width 2)
-;; (setq indent-tabs-mode 't)
-;; (setq ruby-indent-level tab-width)
 
 
 (defun indent-set ()
@@ -298,7 +217,6 @@
              (define-key c-mode-base-map "\C-m" 'newline-and-indent)
 			 (c-set-offset 'inline-open 0)
 			 (c-set-offset 'inline-close 0)
-
 ))
 (setq tab-width 2) ; タブ記号のインデント深さ
 ( setq c-tab-width 2 )
@@ -326,25 +244,13 @@ nil
 (font-lock-mode t))) t)
 
 
-;; C-h をバックスペースに。
-(global-set-key "\C-h" 'backward-delete-char)
+;; ;; ========================================
+;; ;; ========================================
+;; ;;   別ファイルに分けたい内容
+;; ;; ========================================
+;; ;; ========================================
 
-
-;; ========================================
-;; ========================================
-;;   別ファイルに分けたい内容
-;; ========================================
-;; ========================================
-
-;; 外部elのインストールが必要な設定
-;; ========================================
-;; sticky
-;; ========================================
-;; ----大文字入力をshiftを離したあとでもできるようにする----
-;; sitickyを読み込む
-;; (require 'sticky)
-;; 日本語キーボードで、shitfキーをshiftキーとして使う(shift以外をshiftにも置き換えられるが置き換えない)
-;; (use-sticky-key ";" sticky-alist:ja)
+;; ;; 外部elのインストールが必要な設定
 
 ;; ========================================
 ;; anything
@@ -394,10 +300,12 @@ It is automatically generated by `anything-migrate-sources'."
 ;; (el-get)
 
 
-;; ;; 略語から定型文の挿入
-;; (require 'yasnippet-config)
-;; ;; 推奨設定を関数にまとめている??
-;; (yas/setup "~/.emacs.d/plugins/yasnippet-0.6.1c")
+;; 略語から定型文の挿入
+;;(require 'yasnippet-config)
+;; 推奨設定を関数にまとめている??
+;;(yas/setup "~/.emacs.d/plugins/yasnippet-0.6.1c")
+;; XXX エラー ファイルが見つからない？
+
 
 ;; ----------------------------------------
 ;; popwin  http://d.hatena.ne.jp/m2ym/searchdiary?word=*[Emacs]
@@ -425,46 +333,18 @@ It is automatically generated by `anything-migrate-sources'."
 ;; ----------------------------------------
 ;; tramp  リモートファイルを編集する
 ;; ----------------------------------------
-
 (require 'tramp)
 (setq tramp-default-method "scpx")
 
-;; ==========================================
-;; remember-el
-;; ==========================================
-(define-key global-map "\C-cr" 'org-remember)
-
-;; ==========================================
-;; caroo.el カクー Webのドローツール
-;; ==========================================
-(require 'cacoo)
-(global-set-key (kbd "M--") 'toggle-cacoo-minor-mode)
-(setq cacoo:api-key "D3OEYjRAfLAlmuk7K8lW")
-(require 'cacoo-plugins)      ; 追加機能
-;; 追加設定
-(setq cacoo:img-dir-ok t) ; 画像フォルダは確認無しで作る
-
-;; ----------------------------------------
-;; org-mode, はてなフォトライフ,html imgタグの記法にcacoo.elを対応させる
-;; ---------------------------------------
-(setq cacoo:img-regexp
-     '("\$latex \displaystyle img:\\(.*\\)\$[^]\n\r]*$latex " ; imgのデフォルト記法
-       "\$latex \displaystyle f:\\(.*\\)\$[^]\n\t]*$"   ; はてなフォトライフ記法
-       "<img src=[\"']\\(.*\\)[\"'][ ]*\\/>[^\n\t]*$latex " ; HTMLのimgタグ
-       "\$latex \displaystyle .*\\[\\(.*\\)\$\\][^]\n\r]*$" ;org-modeの記法
-       ))
-;; 邪魔なアンダーラインを消すための設定
-(defadvice toggle-cacoo-minor-mode
-    (around my-toggle-cacoo-minor activate)
-    (if (string-equal mode-name "Org")
-        (if cacoo-minor-mode
-            (progn
-              ad-do-it
-              (set-face-underline-p 'org-link t))
-          (progn
-            (set-face-underline-p 'org-link nil)
-            ad-do-it))
-      ad-do-it))
+;; ;; ==========================================
+;; ;; caroo.el カクー Webのドローツール
+;; ;; ==========================================
+;; (require 'cacoo)
+;; (global-set-key (kbd "M--") 'toggle-cacoo-minor-mode)
+;; (setq cacoo:api-key "D3OEYjRAfLAlmuk7K8lW")
+;; (require 'cacoo-plugins)      ; 追加機能
+;; ;; 追加設定
+;; (setq cacoo:img-dir-ok t) ; 画像フォルダは確認無しで作る
 
 ;; ========================================
 ;; org-remenber メモツール
@@ -483,33 +363,10 @@ It is automatically generated by `anything-migrate-sources'."
         ("Idea" ?i "** %?\n   %i\n   %a\n   %t" nil "New Ideas")
         ))
 
-;; ========================================
-;; org-agendaモードへのキーバインド
-
-(define-key global-map "\C-ca" 'org-agenda)
-;; ========================================
-;; agendaの休日表示設定
-;; ========================================
-(setq org-agenda-files (list org-default-notes-file
-                             (format-time-string "~/memo/holidays.%Y.org")))
-
-
 ;; ============================================================
 ;; edit-grep
 ;; ============================================================
 (require 'grep-edit)
-
-;; ========================================
-;; evernote-mode
-;; ========================================
-(require ' evernote-mode)
-(global-set-key "\C-cec" 'evernote-create-note)
-(global-set-key "\C-ceo" 'evernote-open-note)
-(global-set-key "\C-ces" 'evernote-search-notes)
-(global-set-key "\C-ceS" 'evernote-do-saved-search)
-(global-set-key "\C-cew" 'evernote-write-note)
-(global-set-key "\C-cep" 'evernote-post-region)
-(global-set-key "\C-ceb" 'evernote-browser)
 
 ;; ============================================================
 ;; ruby-block endに対応するブロックを示す
@@ -543,37 +400,22 @@ It is automatically generated by `anything-migrate-sources'."
 (autoload 'htmp-helper-mode "html-helper-mode" "Yay HTML" t)
 
 ;; ============================================================
-;; simple-hatena-mode
-;; ============================================================
-;; http://coderepos.org/share/wiki/SimpleHatenaMode
-(require 'simple-hatena-mode)
-(setq simple-hatena-default-id "hi_igu")
-;; はてダラスクリプトのパス(デフォルト値: hw.pl)
-;; (setq simple-hatena-bin "~/bin/hw.pl")
-
-
-;; ============================================================
 ;; フォント
 ;; ============================================================
-(add-to-list 'default-frame-alist '(font . "ricty-11"))
-
+(add-to-list 'default-frame-alist '(font . "Ricty-11"))
 
 ;; ============================================================
 ;; flymake c/c++
 ;; ============================================================
-
 (setq gcc-warning-options
       '("-Wall" "-Wextra" "-Wformat=2" "-Wstrict-aliasing=2" "-Wcast-qual"
       "-Wcast-align" "-Wwrite-strings" "-Wfloat-equal"
       "-Wpointer-arith" "-Wswitch-enum"
       ))
-
 (setq gxx-warning-options
       `(,@gcc-warning-options "-Woverloaded-virtual" "-Weffc++")
       )
-
 (setq gcc-cpu-options '("-msse" "-msse2" "-mmmx"))
-
 (defun flymake-c-init ()
   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
                        'flymake-create-temp-inplace))
@@ -597,12 +439,9 @@ It is automatically generated by `anything-migrate-sources'."
 (push '(".+\\.h$" flymake-c++-init) flymake-allowed-file-name-masks)
 (push '(".+\\.cpp$" flymake-c++-init) flymake-allowed-file-name-masks)
 (add-hook 'c++-mode-hook '(lambda () (flymake-mode t)) )
-
 ;; ============================================================
-;; htmlize ソースコードの色付け 2011.07.12
-;; ============================================================
-
 ;;; dmacro.el の設定  キー操作の繰り返しを C-t で
+;; ============================================================
 (defconst *dmacro-key* "\C-t" "繰返し指定キー")
 (global-set-key *dmacro-key* 'dmacro-exec)
 (autoload 'dmacro-exec "dmacro" nil t)
@@ -756,58 +595,24 @@ If INDENT is `multi-char', that means indent multi-character
 (setq sh-basic-offset 2)
 (setq sh-indentation 2)
 
-;;;;;;;;;;;;;;;;;;
-;; emacs-client ;;
-;;;;;;;;;;;;;;;;;;
-;; ref: http://d.hatena.ne.jp/khiker/20110508/gnus
-(require 'server)
-(unless (server-running-p)
-	(server-start))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; mailer on emacs: gnus ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'gnus)
-(load "gnus-setup")
-(require 'gnus-start)
-(require 'gnus-art)
-(require 'auth-source)
-(require 'starttls)
-(require 'nnimap)
-(require 'nnir)
-
-;; Username and mailaddress.
-(setq user-full-name "clc.iguto"
-			user-mail-address "clc.iguto@gmail.com")
-
-;; for reading mail by imap.
-(setq gnus-select-method
-			'(nnimap "gmail"
-							 (nnimap-address "imap.gmail.com")
-							 (nnimap-server-port 993)
-							 (nnimap-authinfo-file "~/.emacs.d/.authinfo")
-							 (nnimap-stream ssl)))
-
-;; for sending mail
-;; -- but, there is no need to send mail on emacs, so no setting 
-
-;; gnu-topic-mode by default
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-
-;; MUA is gnus.
-(setq read-mail-command 'gnus
-      mail-user-agent 'gnus-user-agent)
+;; ;;;;;;;;;;;;;;;;;;
+;; ;; emacs-client ;;
+;; ;;;;;;;;;;;;;;;;;;
+;; ;; ref: http://d.hatena.ne.jp/khiker/20110508/gnus
+;; (require 'server)
+;; (unless (server-running-p)
+;; 	(server-start))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; view-mode: less like  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; change modeline color on view-mode
+;; change mode-line color on view-mode
 (progn
  (require 'viewer)
  (viewer-stay-in-setup)
- (setq viewer-modeline-color-unwritable "tomato"
-       viewer-modeline-color-view "orange")
+ (setq viewer-mode-line-color-unwritable "tomato"
+       viewer-mode-line-color-view "orange")
  (viewer-change-modeline-color-setup))
 
 ;; change keybind
@@ -839,13 +644,13 @@ If INDENT is `multi-char', that means indent multi-character
  (global-set-key [f11] 'view-mode)
 )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; rcodetools: edit ruby file tool ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; rcodetools: edit ruby file tool ;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'anything)
-(require 'anything-rcodetools)
-;; Command to get all RI entries.
-(setq rct-get-all-methods-command "PAGER=cat fri -l")
-;; See docs
-(define-key anything-map "\C-e" 'anything-execute-persistent-action)
+;; (require 'anything)
+;; (require 'anything-rcodetools)
+;; ;; Command to get all RI entries.
+;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
+;; ;; See docs
+;; (define-key anything-map "\C-e" 'anything-execute-persistent-action)
