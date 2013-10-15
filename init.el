@@ -36,33 +36,33 @@
 ;; (tool-bar-mode nil)                  ; ツールバー非表示
 ;;(set-scroll-bar-mode nil)            ; スクロールバー非表示
 
-(set-background-color "black")
-(set-foreground-color "white")
-(set-face-foreground 'font-lock-comment-face "green")
-(set-face-foreground 'font-lock-string-face "blue")
-(set-face-foreground 'font-lock-keyword-face "PaleGreen")
-(set-face-foreground 'font-lock-function-name-face "green")
-(set-face-foreground 'font-lock-warning-face "gold")
-(set-face-background 'region "RosyBrown")
-;(set-frame-background-color "white") ; error on utrillo1
-(set-face-background 'mode-line "skyblue")
-(set-face-background 'mode-line "purple")
-(set-face-background 'highlight "gray")
+;; (set-background-color "black")
+;; (set-foreground-color "white")
+;; (set-face-foreground 'font-lock-comment-face "green")
+;; (set-face-foreground 'font-lock-string-face "blue")
+;; (set-face-foreground 'font-lock-keyword-face "PaleGreen")
+;; (set-face-foreground 'font-lock-function-name-face "green")
+;; (set-face-foreground 'font-lock-warning-face "gold")
+;; (set-face-background 'region "RosyBrown")
+;; ;(set-frame-background-color "white") ; error on utrillo1
+;; (set-face-background 'mode-line "skyblue")
+;; (set-face-background 'mode-line "purple")
+;; (set-face-background 'highlight "gray")
 
 
 ;; ;; ----現在行に色をつける----
-(defface hlline-face
-  '((((class color)
-      (background dark))
-     ;(:background "dark slate gray"))
-     (:background "color-233"))
-    (((class color)
-      (background light))
-     ;(:background "ForestGreen"))
-     (:background "color-233"))
-    (tool-bar-mode ()))
-  "*Face used by hl-line.")
-(setq hl-line-face 'hlline-face)
+;; (defface hlline-face
+;;   '((((class color)
+;;       (background dark))
+;;      ;(:background "dark slate gray"))
+;;      (:background "color-233"))
+;;     (((class color)
+;;       (background light))
+;;      ;(:background "ForestGreen"))
+;;      (:background "color-233"))
+;;     (tool-bar-mode ()))
+;;   "*Face used by hl-line.")
+;; (setq hl-line-face 'hlline-face)
 (global-hl-line-mode t)
 
 ;; ;; ---- 対応する括弧を強調 ----
@@ -731,3 +731,20 @@ If INDENT is `multi-char', that means indent multi-character
 ;; ruby-mode でencoding: utf-8 自動挿入をOFFにする
 ;;
 (defun ruby-mode-set-encoding () ())
+
+
+
+
+
+(custom-set-faces
+ '(default ((t
+             (:background "black" :foreground "#55FF55")
+             )))
+ '(cursor ((((class color)
+             (background dark))
+            (:background "#00AA00"))
+           (((class color)
+             (background light))
+            (:background "#999999"))
+           (t ())
+           )))
