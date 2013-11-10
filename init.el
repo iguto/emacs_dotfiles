@@ -101,7 +101,7 @@
 ;; ========================================
 ;; flymake
 ;; ========================================
-;; ;; ---- リアルタイム文法チェック 
+;; ;; ---- リアルタイム文法チェック
 ;; ;;  flymake for ruby
 (require 'flymake)
 ; I don't like the default colors :)
@@ -161,8 +161,6 @@
 ;; ============================================================
 ;; ;; C-h をバックスペースに。
 (global-set-key "\C-h" 'backward-delete-char)
-
-
 
 
 ;; ;; ============================================================
@@ -734,8 +732,6 @@ If INDENT is `multi-char', that means indent multi-character
 
 
 
-
-
 (custom-set-faces
  '(default ((t
              (:background "black" :foreground "#55FF55")
@@ -748,3 +744,8 @@ If INDENT is `multi-char', that means indent multi-character
             (:background "#999999"))
            (t ())
            )))
+
+;;
+;; 行末の空白を保存時に削除
+;;
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
