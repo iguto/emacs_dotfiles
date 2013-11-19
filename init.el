@@ -745,7 +745,37 @@ If INDENT is `multi-char', that means indent multi-character
            (t ())
            )))
 
+
 ;;
 ;; 行末の空白を保存時に削除
 ;;
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+
+;;
+;; ruby-electric-curliesの動作をカスタマイズ
+;;  { _} だったカーソル位置を { _ } となるようにした
+;;
+(defun ruby-electric-curlies(arg)
+  (interactive "P")
+  (self-insert-command (prefix-numeric-value arg))
+  (if (ruby-electric-is-last-command-char-expandable-punct-p)
+      (cond ((ruby-electric-code-at-point-p)
+             (save-excursion
+               (if ruby-electric-newline-before-closing-bracket
+                   (progn
+                     (newline)
+                     (insert "}")
+                     (ruby-indent-line t))
+                 (progn
+                   (insert "  ")
+                   (insert "}")
+                 ))) (forward-char 1) )
+            ((ruby-electric-string-at-point-p)
+             (if (eq last-command-event ?{)
+                 (save-excursion
+                   (backward-char 1)
+                   (or (char-equal ?\# (preceding-char))
+                       (insert "#"))
+                   (forward-char 1)
+                   (insert "}")))))))
