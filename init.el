@@ -779,3 +779,11 @@ If INDENT is `multi-char', that means indent multi-character
                        (insert "#"))
                    (forward-char 1)
                    (insert "}")))))))
+
+
+;;
+;; menuを隠す
+;;
+(cond
+ (window-system (tool-bar-mode -1))
+ (t (menu-bar-mode -1)))
