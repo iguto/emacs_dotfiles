@@ -168,22 +168,26 @@
 ;; ;; ============================================================
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
  '(c-default-style (quote ((c-mode . "") (c++-mode . "") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
  '(org-agenda-files nil)
  '(org-export-html-with-timestamp t)
+ '(rails-environments (quote ("development" "production" "test" "staging")))
+ '(rails-minor-mode-global-prefix-key "  ")
+ '(rails-minor-mode-local-prefix-key " ")
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Ricty")))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Ricty"))))
+ '(cursor ((((class color) (background dark)) (:background "#00AA00")) (((class color) (background light)) (:background "#999999")) (t nil))))
 
 ;;; This was installed by package-install.el.
 ;;; This provides support for the package system and
@@ -732,18 +736,7 @@ If INDENT is `multi-char', that means indent multi-character
 
 
 
-(custom-set-faces
- '(default ((t
-             (:background "black" :foreground "#55FF55")
-             )))
- '(cursor ((((class color)
-             (background dark))
-            (:background "#00AA00"))
-           (((class color)
-             (background light))
-            (:background "#999999"))
-           (t ())
-           )))
+
 
 
 ;;
@@ -787,3 +780,31 @@ If INDENT is `multi-char', that means indent multi-character
 (cond
  (window-system (tool-bar-mode -1))
  (t (menu-bar-mode -1)))
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
+
+;;
+;; modes for rails
+;;
+; rails-mode
+(require 'rails)
+; rhtml-mode
+(require 'rhtml-mode)
+; カーソルキーが必要でよく使うキーバインドを変更
+(define-key rails-minor-mode-map "\C-c\C-p" 'rails-lib:run-primary-switch)
+(define-key rails-minor-mode-map "\C-c\C-n" 'rails-lib:run-secondary-switch)
+
+;(define-key rails-minor-mode-map "\C-c\C-c" 'prefix)
+;(define-prefix-command
+(message rails-minor-mode-global-prefix-key)
+(message rails-minor-mode-local-prefix-key)
+(setq rails-minor-mode-local-prefix-key "\C-c\C-c\C-c")
