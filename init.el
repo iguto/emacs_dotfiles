@@ -176,9 +176,6 @@
  '(c-default-style (quote ((c-mode . "") (c++-mode . "") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
  '(org-agenda-files nil)
  '(org-export-html-with-timestamp t)
- '(rails-environments (quote ("development" "production" "test" "staging")))
- '(rails-minor-mode-global-prefix-key "  ")
- '(rails-minor-mode-local-prefix-key " ")
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -557,14 +554,6 @@ If INDENT is `multi-char', that means indent multi-character
 (setq default-input-method "japanese-mozc")
 (global-set-key (kbd "C-\\") 'toggle-input-method)
 
-
-;; ========================================
-;; 補完機能
-;; ========================================
-;; auto-completeを読み込む
-(require 'auto-complete)
-(global-auto-complete-mode t)
-
 ;; ;; ============================================================
 ;; ;; Rsense
 ;; ;; ============================================================
@@ -796,15 +785,98 @@ If INDENT is `multi-char', that means indent multi-character
 ;; modes for rails
 ;;
 ; rails-mode
-(require 'rails)
+;(require 'rails)
 ; rhtml-mode
 (require 'rhtml-mode)
 ; カーソルキーが必要でよく使うキーバインドを変更
-(define-key rails-minor-mode-map "\C-c\C-p" 'rails-lib:run-primary-switch)
-(define-key rails-minor-mode-map "\C-c\C-n" 'rails-lib:run-secondary-switch)
+;(define-key rails-minor-mode-map "\C-c\C-p" 'rails-lib:run-primary-switch)
+;(define-key rails-minor-mode-map "\C-c\C-n" 'rails-lib:run-secondary-switch)
 
 ;(define-key rails-minor-mode-map "\C-c\C-c" 'prefix)
 ;(define-prefix-command
-(message rails-minor-mode-global-prefix-key)
-(message rails-minor-mode-local-prefix-key)
-(setq rails-minor-mode-local-prefix-key "\C-c\C-c\C-c")
+;(message rails-minor-mode-global-prefix-key)
+;(message rails-minor-mode-local-prefix-key)
+;(setq rails-minor-mode-local-prefix-key "\C-c\C-c\C-c")
+
+
+;; rinari
+(setq rinari-minor-mode-prefixes (list "\C-c"))
+;; HOWTO: $ ctags-exuberant -a -e -f TAGS --tag-relative -R app lib vendor
+(setq rinari-tags-file-name "TAGS")
+(require 'rinari)
+(add-hook 'emacs-startup-hook
+          (function (lambda ()
+                      (global-rinari-mode))))
+;;
+;; yasnipet-bundle 自動補完
+;;
+(require 'yasnippet)
+(yas/initialize)
+;; (yas/load-directory
+;;  (concat (file-name-directory (or load-file-name buffer-file-name))
+;; 	 "snippets/rails-snippets/"))
+(yas/global-mode t)
+(yas/load-directory "~/.emacs.d/snippets/yasnippets-rails")
+
+;; anything interface
+(eval-after-load "anything-config"
+  '(progn
+     (defun my-yas/prompt (prompt choices &optional display-fn)
+       (let* ((names (loop for choice in choices
+                           collect (or (and display-fn (funcall display-fn choice))
+                                       choice)))
+              (selected (anything-other-buffer
+                         `(((name . ,(format "%s" prompt))
+                            (candidates . names)
+                            (action . (("Insert snippet" . (lambda (arg) arg))))))
+                         "*anything yas/prompt*")))
+         (if selected
+             (let ((n (position selected names :test 'equal)))
+               (nth n choices))
+           (signal 'quit "user quit!"))))
+     (custom-set-variables '(yas/prompt-functions '(my-yas/prompt)))
+     (define-key anything-command-map (kbd "y") 'yas/insert-snippet)))
+;; keybind
+;; (setq yas-insert-snippet "\C-c \C-o")
+;; (setq yas/insert-snippet)
+
+;; (define-key yas-key-map (kbd "C-c C-i") 'yas-insert-snippet
+(define-key global-map (kbd "C-c C-o") 'yas/insert-snippet)
+
+;;
+;; auto-complete
+;;
+(defvar rootpath (expand-file-name "~/.emacs.d"))
+(setq load-path (cons (concat rootpath "/elisp")load-path))
+
+;; submodule関連
+(defvar elisp-package-dir (concat rootpath "/elisp"))
+(defun submodule (dir)
+  (push (format "%s/%s" elisp-package-dir dir) load-path))
+(defun require-submodule (name &optional dir)
+  (push (format "%s/%s" elisp-package-dir (if (null dir) name dir)) load-path)
+  (require name))
+
+;;;; auto-complete
+;; 基本設定
+(submodule "auto-complete")
+(require-submodule 'popup "auto-complete/lib/popup")
+(require-submodule 'fuzzy "auto-complete/lib/fuzzy")
+(require 'auto-complete-config)
+(defvar ac-dictionary-directories  "~/.emacs.d/elisp/auto-complete/dict" )
+(ac-config-default)
+;; カスタマイズ
+(setq ac-auto-start 2)  ;; n文字以上の単語の時に補完を開始
+(setq ac-delay 0.05)  ;; n秒後に補完開始
+(setq ac-use-fuzzy t)  ;; 曖昧マッチ有効
+(setq ac-use-comphist t)  ;; 補完推測機能有効
+(setq ac-auto-show-menu 0.05)  ;; n秒後に補完メニューを表示
+(setq ac-quick-help-delay 0.5)  ;; n秒後にクイックヘルプを表示
+(setq ac-ignore-case nil)  ;; 大文字・小文字を区別する
+
+;; auto-complete の候補に日本語を含む単語が含まれないようにする
+;; http://d.hatena.ne.jp/IMAKADO/20090813/1250130343
+(defadvice ac-word-candidates (after remove-word-contain-japanese activate)
+  (let ((contain-japanese (lambda (s) (string-match (rx (category japanese)) s))))
+    (setq ad-return-value
+          (remove-if contain-japanese ad-return-value))))
