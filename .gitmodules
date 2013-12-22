@@ -7,3 +7,6 @@
 [submodule "snippets/yasnippets-rails"]
 	path = snippets/yasnippets-rails
 	url = https://github.com/eschulte/yasnippets-rails.git
+[submodule "site-lisp/helm"]
+	path = site-lisp/helm
+	url = https://github.com/emacs-helm/helm
