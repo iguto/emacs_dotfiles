@@ -900,3 +900,37 @@ If INDENT is `multi-char', that means indent multi-character
 (global-set-key (kbd "C-x C-o") (lambda () (interactive) (other-window  1))) ; ctrl押しっぱなしでも移動可能
 (global-set-key (kbd "C-x C-n") (lambda () (interactive) (other-window  1))) ; ctrl押しっぱなしでも移動可能
 (global-set-key (kbd "C-x C-p") (lambda () (interactive) (other-window -1))) ; 逆方向の移動
+
+
+(require 'mykie)
+
+(defun mykie-sample ()
+  (interactive)
+  (mykie
+   :default      '(message "普通に呼ばれる関数")
+   :bolp      '(message "行頭で呼ばれる")
+   :eolp      '(message "行末で呼ばれる")
+   :repeat    '(message "同じ場所で呼び出した時よばれる")
+   :C-u       '(message "C-uを押した後に呼ばれる")
+   :C-u&bolp  '(message "行頭かつC-uをおした後に呼ばれる")
+   :C-u&eolp  '(message "行末かつC-uをおした後に呼ばれる")
+   :region    '(message "リージョン選択時に呼ばれる")
+   :region&C-u '(message "C-uを押した後かつリージョン選択時に呼ばれる")
+))
+(global-set-key (kbd "C-t") 'mykie-sample)
+
+(defun mykie-c-k ()
+  (interactive)
+  (mykie
+   :default      (kill-line)
+   :bolp         '(progn (kill-line)
+                         (backward-delete-char))
+   :eolp      '(message "行末で呼ばれる")
+   :repeat    '(message "同じ場所で呼び出した時よばれる")
+   :C-u       '(message "C-uを押した後に呼ばれる")
+   :C-u&bolp  '(message "行頭かつC-uをおした後に呼ばれる")
+   :C-u&eolp  '(message "行末かつC-uをおした後に呼ばれる")
+   :region    '(message "リージョン選択時に呼ばれる")
+   :region&C-u '(message "C-uを押した後かつリージョン選択時に呼ばれる")
+))
+(global-set-key (kbd "C-t") 'mykie-c-k)
