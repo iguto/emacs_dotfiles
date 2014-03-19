@@ -18,6 +18,18 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-7.5/lisp")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-7.5/contrib/lisp")
 
+;;
+;; package.el
+;;
+(require 'package)
+;; MELPAを追加
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+;; ;; Marmaladeを追加
+ (add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; 初期化
+(package-initialize)
+
+
 ;; howm へのパス
 ;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/howm")
 
@@ -185,17 +197,6 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Ricty"))))
  '(cursor ((((class color) (background dark)) (:background "#00AA00")) (((class color) (background light)) (:background "#999999")) (t nil))))
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-;; (when
-;;     (load
-;;      (expand-file-name "~/.emacs.d/elpa/package.el"))
-;;   (package-initialize))
-
 
 
 ;; ; タブ幅
@@ -816,10 +817,10 @@ If INDENT is `multi-char', that means indent multi-character
 ;;; interfacing with ELPA, the package archive.
 ;;; Move this code earlier if you want to reference
 ;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
+;; (when
+;;     (load
+;;      (expand-file-name "~/.emacs.d/elpa/package.el"))
+;;   (package-initialize))
 
 ;;
 ;; modes for rails
@@ -959,3 +960,14 @@ If INDENT is `multi-char', that means indent multi-character
    :region&C-u '(message "C-uを押した後かつリージョン選択時に呼ばれる")
 ))
 (global-set-key (kbd "C-t") 'mykie-c-k)
+
+(require 'coffee-mode)
+
+;;
+;; golang env
+;;
+(require 'go-mode-load)
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(require 'go-eldoc)
+(add-hook 'go-mode-hook 'go-eldoc-setup)
