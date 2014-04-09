@@ -23,7 +23,7 @@
 ;;
 (require 'package)
 ;; MELPAを追加
-;; (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; ;; Marmaladeを追加
  (add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/"))
 ;; 初期化
@@ -971,3 +971,24 @@ If INDENT is `multi-char', that means indent multi-character
 (require 'auto-complete-config)
 (require 'go-eldoc)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
+
+
+;;
+;; projectile-rails    a replacement of rinari
+;;
+(require 'projectile)
+(projectile-global-mode)
+
+(require 'projectile-rails)
+(add-hook 'projectile-mode-hook 'projectile-rails-on)
+
+;; ;; use better ido
+;; (require 'flx-ido)
+;; (ido-mode 1)
+;; (ido-everywhere 1)
+;; (flx-ido-mode 1)
+;; ;; disable ido faces to see flx highlights.
+;; (setq ido-use-faces nil)
+
+;; use grizzle to select something
+(setq projectile-completion-system 'grizzl)
