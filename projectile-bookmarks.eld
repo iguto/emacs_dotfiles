@@ -1,1 +1,1 @@
-("~/cem/newton/" "~/cem/lightningpress/" "~/.emacs.d/")
+("~/cem/lightningpress/" "~/.emacs.d/")

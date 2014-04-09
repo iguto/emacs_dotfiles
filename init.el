@@ -25,7 +25,7 @@
 ;; MELPAを追加
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; ;; Marmaladeを追加
- (add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/"))
 ;; 初期化
 (package-initialize)
 
@@ -463,10 +463,6 @@
 (require 'html-helper-mode)
 (autoload 'htmp-helper-mode "html-helper-mode" "Yay HTML" t)
 
-;; ============================================================
-;; フォント
-;; ============================================================
-(add-to-list 'default-frame-alist '(font . "Ricty-11"))
 
 ;; ============================================================
 ;; flymake c/c++
@@ -563,10 +559,9 @@ If INDENT is `multi-char', that means indent multi-character
 ;; (setq comment-style 'box)
 ;; (setq comment-style 'box-multi)
 
- ;;;;;;;;;;;;;;;;;;;;
- ;; ウィンドウ移動  ;;
- ;;;;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;;;;;;;
+;; ウィンドウ移動  ;;
+;;;;;;;;;;;;;;;;;;;;
 ;; 反対側のｳｨﾝﾄﾞｳにいけるように
 (setq windmove-wrap-around t)
 ;; C-M-{p,n,f,b}でｳｨﾝﾄﾞｳ間を移動
@@ -992,3 +987,6 @@ If INDENT is `multi-char', that means indent multi-character
 
 ;; use grizzle to select something
 (setq projectile-completion-system 'grizzl)
+
+
+;;
